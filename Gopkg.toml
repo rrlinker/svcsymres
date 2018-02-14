@@ -1,0 +1,17 @@
+required = [
+    "github.com/blakesmith/ar"
+]
+
+ignored = [
+    "github.com/rrlinker/go-librlcom"
+]
+
+[prune]
+    go-tests = true
+    unused-packages = true
+
+[[constraint]]
+    name = "github.com/blakesmith/ar"
+    branch = "master"
+    source = "https://github.com/RIscRIpt/ar.git"
+
