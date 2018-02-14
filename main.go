@@ -63,8 +63,6 @@ func handleClients(listener net.Listener) {
 }
 
 func handleClient(conn net.Conn) {
-	log.Printf("Client connected from %+v\n", conn.RemoteAddr())
-
 	c := librlcom.NewCourier(conn)
 
 loop:
@@ -79,28 +77,27 @@ loop:
 		case io.EOF:
 			break loop
 		default:
-			log.Println(err)
+			log.Println(err, msg)
 			break loop
 		}
 
 		switch m := msg.(type) {
 		case *librlcom.GetSymbolLibrary:
 			library, err := SymRes.Resolve(m.String.String())
-			if err != nil {
-				log.Println(err)
-			}
-			err = c.Send(&librlcom.ResolvedSymbolLibrary{
-				String: librlcom.String(library),
-			})
-			if err != nil {
+			if err == nil {
+				err = c.Send(&librlcom.ResolvedSymbolLibrary{
+					String: librlcom.String(library),
+				})
+				if err != nil {
+					log.Println(err)
+				}
+			} else {
 				log.Println(err)
 			}
 		default:
 			log.Println(librlcom.ErrUnknownMessage, m)
 		}
 	}
-
-	log.Printf("Client disconnected from %+v\n", conn.RemoteAddr())
 
 	conn.Close()
 }
