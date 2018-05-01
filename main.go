@@ -18,7 +18,7 @@ const (
 
 var (
 	flagListenPath = flag.String("addr", "/var/run/svcsymres.sock", "listen path")
-	flagLibsPath   = flag.String("libs", "./libs", "path to directory with .lib files")
+	flagLibsPath   = flag.String("libs", "/usr/local/rrlinker/libs", "path to directory with .lib files")
 )
 
 var SymRes *SymbolResolver
