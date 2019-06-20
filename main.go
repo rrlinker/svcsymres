@@ -17,7 +17,7 @@ const (
 )
 
 var (
-	flagListenPath = flag.String("addr", "/var/run/svcsymres.sock", "listen path")
+	flagListenPath = flag.String("addr", "/usr/local/rrlinker/svcsymres.sock", "listen path")
 	flagLibsPath   = flag.String("libs", "/usr/local/rrlinker/libs", "path to directory with .lib files")
 )
 
