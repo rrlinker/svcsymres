@@ -64,7 +64,6 @@ func handleClients(listener net.Listener) {
 
 func handleClient(conn net.Conn) {
 	c := librlcom.NewCourier(conn)
-
 loop:
 	for {
 		msg, err := c.Receive()
@@ -80,7 +79,6 @@ loop:
 			log.Println(err, msg)
 			break loop
 		}
-
 		switch m := msg.(type) {
 		case *librlcom.GetSymbolLibrary:
 			library, err := SymRes.Resolve(m.String.String())
@@ -92,12 +90,16 @@ loop:
 					log.Println(err)
 				}
 			} else {
-				log.Println(err)
+				err = c.Send(&librlcom.ResolvedSymbolLibrary{
+					String: librlcom.String(""),
+				})
+				if err != nil {
+					log.Println(err)
+				}
 			}
 		default:
 			log.Println(librlcom.ErrUnknownMessage, m)
 		}
 	}
-
 	conn.Close()
 }
